@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Lecteur Audio</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('background.jpg'); /* Remplace 'background.jpg' par le chemin de ton image de fond */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-top: 50px;
+        }
+        .profile-video {
+            border-radius: 10px;
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+        }
+        h1 {
+            font-size: 2em;
+        }
+        audio {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <video class="profile-video" controls autoplay muted>
+            <source src="mon film.mp4" type="video/mp4"> <!-- Remplace 'votre_video.mp4' par le chemin de ta vidéo -->
+            Votre navigateur ne supporte pas l'élément vidéo.
+        </video>
+        <h1>Écoutez ce fichier audio</h1>
+        <audio controls>
+            <source src="mots.mp3" type="audio/mpeg">
+            Votre navigateur ne supporte pas l'élément audio.
+        </audio>
+    </div>
+</body>
+</html>
+
+
+
