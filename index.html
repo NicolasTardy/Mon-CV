@@ -2,53 +2,125 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Lecteur Audio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Page CV</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('background.jpg'); /* Remplace 'background.jpg' par le chemin de ton image de fond */
+            background-image: url('background.jpg');
             background-size: cover;
-            background-position: center;
-            color: white;
-            text-align: center;
+            background-repeat: no-repeat;
             margin: 0;
             padding: 0;
+            color: white;
+            text-align: center;
         }
         .container {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(0, 0, 0, 0.7);
             padding: 20px;
+            margin: 50px auto;
+            width: 80%;
             border-radius: 10px;
-            display: inline-block;
-            margin-top: 50px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
         }
-        .profile-video {
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .video-item {
+            background-color: rgba(255, 255, 255, 0.2);
             border-radius: 10px;
-            width: 300px;
-            height: 300px;
-            object-fit: cover;
+            padding: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            display: block;
+        }
+        .video-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .video-item:hover img {
+            opacity: 0;
         }
         h1 {
-            font-size: 2em;
+            font-size: 2.5em;
+            margin-bottom: 20px;
         }
-        audio {
-            margin-top: 20px;
+        h2 {
+            margin-top: 0;
+            z-index: 2;
+            position: relative;
+        }
+        .competences h2 {
+            color: black;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <video class="profile-video" controls autoplay muted>
-            <source src="mon film.mp4" type="video/mp4"> <!-- Remplace 'votre_video.mp4' par le chemin de ta vidéo -->
-            Votre navigateur ne supporte pas l'élément vidéo.
-        </video>
-        <h1>Écoutez ce fichier audio</h1>
-        <audio controls>
-            <source src="mots.mp3" type="audio/mpeg">
-            Votre navigateur ne supporte pas l'élément audio.
-        </audio>
+        <h1>Bienvenue sur ma page CV</h1>
+        <div class="video-grid">
+            <div class="video-item">
+                <h2>Qui je suis</h2>
+                <img src="qui_je_suis.jpg" alt="Qui je suis">
+                <video controls autoplay>
+                    <source src="qui_je_suis.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la balise vidéo.
+                </video>
+            </div>
+            <div class="video-item">
+                <h2>Mes expériences</h2>
+                <img src="mes_experiences.jpg" alt="Mes expériences">
+                <video controls>
+                    <source src="mes_experiences.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la balise vidéo.
+                </video>
+            </div>
+            <div class="video-item">
+                <h2>Mes formations</h2>
+                <img src="mes_formations.jpg" alt="Mes formations">
+                <video controls>
+                    <source src="mes_formations.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la balise vidéo.
+                </video>
+            </div>
+            <div class="video-item competences">
+                <h2>Mes principales compétences</h2>
+                <img src="mes_competences.jpg" alt="Mes principales compétences">
+                <video controls>
+                    <source src="mes_competences.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la balise vidéo.
+                </video>
+            </div>
+            <div class="video-item">
+                <h2>Ce que j'aime faire</h2>
+                <img src="ce_que_jaime_faire.jpg" alt="Ce que j'aime faire">
+                <video controls>
+                    <source src="ce_que_jaime_faire.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la balise vidéo.
+                </video>
+            </div>
+            <div class="video-item">
+                <h2>Comment me joindre ?</h2>
+                <img src="comment_me_joindre.jpg" alt="Comment me joindre">
+                <video controls>
+                    <source src="comment_me_joindre.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la balise vidéo.
+                </video>
+            </div>
+        </div>
     </div>
 </body>
 </html>
-
-
-
