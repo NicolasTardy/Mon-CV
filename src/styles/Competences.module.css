@@ -1,0 +1,89 @@
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .backLink {
+    font-size: 1rem;
+    color: #4A90E2;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+  
+  .backLink:hover {
+    background: #4A90E2;
+    color: #fff;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1;
+  }
+  
+  .fullIntroduction {
+    margin-bottom: 1.5rem;
+  }
+  
+  .introduction {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+    text-align: justify;
+  }
+  
+  .intro {
+    margin-bottom: 1.5rem;
+  }
+  
+  .paragraph {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+  
+  .sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .section {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #4A90E2;
+  }
+  
+  .sectionTitle {
+    font-size: 1.5rem;
+    color: #4A90E2;
+    margin-bottom: 0.8rem;
+  }
+  
+  .list {
+    list-style: disc;
+    margin-left: 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+  
+  .listItem {
+    margin-bottom: 0.5rem;
+  }

@@ -1,0 +1,61 @@
+.container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+  
+  .backLink {
+    font-size: 1rem;
+    color: #4A90E2;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.5rem;
+    border: 1px solid #4A90E2;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+  
+  .backLink:hover {
+    background: #4A90E2;
+    color: #fff;
+  }
+  
+  .title {
+    font-size: 2rem;
+    margin: 0;
+    text-align: center;
+    flex-grow: 1;
+  }
+  
+  .formations {
+    margin-top: 1rem;
+  }
+  
+  .formation {
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #4A90E2;
+  }
+  
+  .formationTitle {
+    font-size: 1.3rem;
+    color: #4A90E2;
+    margin: 0 0 0.3rem 0;
+  }
+  
+  .institution {
+    font-size: 1.1rem;
+    margin: 0;
+  }
