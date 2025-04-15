@@ -1,4 +1,4 @@
-import { useContext, useRef, useState, useEffect } from "react";
+import { useContext, useRef, useState, useEffect, useCallback } from "react";
 import { LanguageContext } from "./_app";
 import Link from "next/link";
 import Head from "next/head";
@@ -7,41 +7,39 @@ import styles from "../styles/HomeCube.module.css";
 export default function Home() {
   const { lang } = useContext(LanguageContext);
 
-  // Textes en français et anglais (adaptés à la nouvelle identité lumineuse)
+  // Définitions bilingues
   const texts = {
     fr: {
       pageTitle: "Mon CV - Nicolas Tardy",
-      heading: "Bienvenue sur mon CV interactif !",
+      heading: "Bienvenue et merci de votre visite",
       subheading:
-        "Déplacez simplement la souris dans la zone pastel pour donner de l'élan au cube. Plus vous bougez vite, plus il tournera rapidement !",
-      navTitle: "Accès rapide :",
+        "Déplacez la souris (ou glissez votre doigt sur mobile) dans la zone pastel pour donner de l'élan au cube. Plus vous bougez vite, plus il tourne rapidement !",
       presentations: "Présentation",
       competences: "Compétences",
       coordonnees: "Coordonnées",
       experiences: "Expériences",
       formations: "Formations",
       interets: "Centres d'Intérêt",
-      downloadTitle: "Téléchargez mes CV :",
+      downloadTitle: "Téléchargez mes CV",
       downloadClassic: "Classique (FR)",
       downloadFun: "Fun (Comics)",
-      downloadEnglish: "Anglais (bientôt)"
+      downloadEnglish: "Anglais"
     },
     en: {
       pageTitle: "My Resume - Nicolas Tardy",
-      heading: "Welcome to my interactive resume!",
+      heading: "Welcome and thank you for your visit",
       subheading:
-        "Simply move your mouse within the pastel area to spin the cube. The faster you move, the faster it rotates!",
-      navTitle: "Quick Access:",
+        "Simply move your mouse (or slide your finger on mobile) within the pastel area to spin the cube. The faster you move, the faster it rotates!",
       presentations: "Presentation",
       competences: "Technical Skills",
       coordonnees: "Contact",
       experiences: "Work Experience",
       formations: "Education",
       interets: "Interests",
-      downloadTitle: "Download my resumes:",
+      downloadTitle: "Download my resumes",
       downloadClassic: "Classic (FR)",
       downloadFun: "Fun (Comics)",
-      downloadEnglish: "English (coming soon)"
+      downloadEnglish: "English"
     }
   };
 
@@ -51,43 +49,49 @@ export default function Home() {
   const [rotateX, setRotateX] = useState(-10);
   const [rotateY, setRotateY] = useState(20);
 
-  // Gestion de la vitesse (inertie)
   const velocity = useRef({ vx: 0, vy: 0 });
   const lastPos = useRef({ x: 0, y: 0 });
-  const hasInitPos = useRef(false);
-  const rafId = useRef(null);
+  const active = useRef(false);
+  const frameId = useRef(null);
 
-  useEffect(() => {
-    rafId.current = requestAnimationFrame(animateCube);
-    return () => {
-      if (rafId.current) cancelAnimationFrame(rafId.current);
-    };
-  }, []);
-
-  function animateCube() {
+  // Fonction d’animation avec pointer events
+  const animateCube = useCallback(() => {
     setRotateX((prev) => prev + velocity.current.vy);
     setRotateY((prev) => prev + velocity.current.vx);
-    velocity.current.vx *= 0.97;
-    velocity.current.vy *= 0.97;
-    rafId.current = requestAnimationFrame(animateCube);
-  }
+    // Appliquer une friction
+    velocity.current.vx *= 0.96;
+    velocity.current.vy *= 0.96;
+    frameId.current = requestAnimationFrame(animateCube);
+  }, []);
 
-  function handleMouseEnter() {
-    hasInitPos.current = false;
-  }
+  useEffect(() => {
+    frameId.current = requestAnimationFrame(animateCube);
+    return () => {
+      if (frameId.current) cancelAnimationFrame(frameId.current);
+    };
+  }, [animateCube]);
 
-  function handleMouseMove(e) {
-    if (!hasInitPos.current) {
-      lastPos.current = { x: e.clientX, y: e.clientY };
-      hasInitPos.current = true;
-      return;
-    }
+  // Gestion unifiée via les pointer events
+  const handlePointerDown = (e) => {
+    // Empêche les comportements par défaut (ex: défilement)
+    e.preventDefault();
+    lastPos.current = { x: e.clientX, y: e.clientY };
+    active.current = true;
+  };
+
+  const handlePointerMove = (e) => {
+    if (!active.current) return;
+    e.preventDefault();
     const dx = e.clientX - lastPos.current.x;
     const dy = e.clientY - lastPos.current.y;
     velocity.current.vx = dx * 0.3;
     velocity.current.vy = -dy * 0.3;
     lastPos.current = { x: e.clientX, y: e.clientY };
-  }
+  };
+
+  const handlePointerUp = () => {
+    active.current = false;
+  };
 
   return (
     <>
@@ -95,15 +99,18 @@ export default function Home() {
         <title>{t.pageTitle}</title>
         <meta name="description" content={t.subheading} />
       </Head>
-
+      
       <main className={styles.mainContainer}>
-        <h1 className={styles.heading}>{t.heading}</h1>
-        <p className={styles.subheading}>{t.subheading}</p>
-
-        {/* Bloc Navigation discret en haut */}
-        <div className={styles.navBlock}>
-          <h2 className={styles.navTitle}>{t.navTitle}</h2>
-          <div className={styles.navLinks}>
+        {/* En-tête de la page */}
+        <header className={styles.heroHeader}>
+          <h1 className={styles.heroTitle}>{t.heading}</h1>
+          <p className={styles.heroSub}>{t.subheading}</p>
+        </header>
+        
+        {/* Contenu principal : Navigation verticale à gauche + Cube au centre */}
+        <div className={styles.contentWrapper}>
+          {/* Navigation verticale sur le côté gauche */}
+          <nav className={styles.sideNav}>
             <Link href="/presentation" className={styles.navButton}>
               {t.presentations}
             </Link>
@@ -122,117 +129,111 @@ export default function Home() {
             <Link href="/interets" className={styles.navButton}>
               {t.interets}
             </Link>
-          </div>
-        </div>
-
-        {/* Zone dédiée du Cube */}
-        <div
-          className={styles.scene}
-          onMouseEnter={handleMouseEnter}
-          onMouseMove={handleMouseMove}
-        >
-          <div
-            className={styles.cube}
-            style={{
-              transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-            }}
+          </nav>
+          
+          {/* Zone du cube */}
+          <div 
+            className={styles.scene}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerLeave={handlePointerUp}
           >
-            <div className={`${styles.face} ${styles.front}`}>
-              <Link href="/presentation">
-                <video
-                  src="/videos/presentation.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  className={styles.videoFace}
-                />
-              </Link>
-            </div>
-            <div className={`${styles.face} ${styles.back}`}>
-              <Link href="/competences">
-                <video
-                  src="/videos/competences.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  className={styles.videoFace}
-                />
-              </Link>
-            </div>
-            <div className={`${styles.face} ${styles.right}`}>
-              <Link href="/coordonnees">
-                <video
-                  src="/videos/coordonnees.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  className={styles.videoFace}
-                />
-              </Link>
-            </div>
-            <div className={`${styles.face} ${styles.left}`}>
-              <Link href="/experiences">
-                <video
-                  src="/videos/experiences.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  className={styles.videoFace}
-                />
-              </Link>
-            </div>
-            <div className={`${styles.face} ${styles.top}`}>
-              <Link href="/formations">
-                <video
-                  src="/videos/formations.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  className={styles.videoFace}
-                />
-              </Link>
-            </div>
-            <div className={`${styles.face} ${styles.bottom}`}>
-              <Link href="/interets">
-                <video
-                  src="/videos/interets.mp4"
-                  autoPlay
-                  muted
-                  loop
-                  className={styles.videoFace}
-                />
-              </Link>
+            <div
+              className={styles.cube}
+              style={{ transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)` }}
+            >
+              <div className={`${styles.face} ${styles.front}`}>
+                <Link href="/presentation">
+                  <video
+                    src="/videos/presentation.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={styles.videoFace}
+                  />
+                </Link>
+              </div>
+              <div className={`${styles.face} ${styles.back}`}>
+                <Link href="/competences">
+                  <video
+                    src="/videos/competences.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={styles.videoFace}
+                  />
+                </Link>
+              </div>
+              <div className={`${styles.face} ${styles.right}`}>
+                <Link href="/coordonnees">
+                  <video
+                    src="/videos/coordonnees.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={styles.videoFace}
+                  />
+                </Link>
+              </div>
+              <div className={`${styles.face} ${styles.left}`}>
+                <Link href="/experiences">
+                  <video
+                    src="/videos/experiences.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={styles.videoFace}
+                  />
+                </Link>
+              </div>
+              <div className={`${styles.face} ${styles.top}`}>
+                <Link href="/formations">
+                  <video
+                    src="/videos/formations.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={styles.videoFace}
+                  />
+                </Link>
+              </div>
+              <div className={`${styles.face} ${styles.bottom}`}>
+                <Link href="/interet">
+                  <video
+                    src="/videos/interets.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className={styles.videoFace}
+                  />
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Bloc Téléchargement – 3 boutons en bas */}
-        <div className={styles.downloadBlock}>
-          <h2 className={styles.navTitle}>{t.downloadTitle}</h2>
-          <div className={styles.navLinks}>
-            <a
-              href="/CVfr_Nicolas_Tardy.pdf"
-              download
-              className={styles.navButton}
-            >
+        
+        {/* Footer de téléchargement au centre */}
+        <footer className={styles.downloadFooter}>
+          <h2 className={styles.downloadTitle}>{t.downloadTitle}</h2>
+          <div className={styles.downloadLinks}>
+            <a href="/CVfr_Nicolas_Tardy.pdf" download className={styles.downloadBtn}>
               {t.downloadClassic}
             </a>
-            <a
-              href="/nicolas tardy resume comics.pdf"
-              download
-              className={styles.navButton}
-            >
+            <a href="/nicolas tardy resume comics.pdf" download className={styles.downloadBtn}>
               {t.downloadFun}
             </a>
-            <a
-              href="/CVen_Nicolas_Tardy.pdf"
-              download
-              className={styles.navButton}
-            >
+            <a href="/Nicolas Tardy english resume.pdf" download className={styles.downloadBtn}>
               {t.downloadEnglish}
             </a>
           </div>
-        </div>
+        </footer>
       </main>
     </>
   );

@@ -1,114 +1,87 @@
-/* src/styles/HomeCube.module.css */
-
-/* Fond général lumineux */
+/* Global */
 .mainContainer {
   min-height: 100vh;
   padding: 2rem;
-  background: linear-gradient(135deg, #fdfdfd, #f5f5f5);
+  background: linear-gradient(135deg, #ffffff, #f9f9f9);
   color: #333;
-  text-align: center;
+  font-family: "Roboto", sans-serif;
+}
 
+/* En-tête Hero */
+.heroHeader {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.heroTitle {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #4A90E2;
+}
+.heroSub {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Contenu principal : flex container */
+.contentWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto 2rem;
+  flex-wrap: wrap;
+}
+
+/* Navigation latérale verticale */
+.sideNav {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-/* Titres */
-.heading {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.subheading {
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto 2rem;
-  line-height: 1.4;
-  color: #555;
-}
-
-/* Bloc navigation supérieur */
-.navBlock {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 6px;
-  max-width: 600px;
-  width: 100%;
-  margin-bottom: 2rem;
-  border: 1px solid #4A90E2;
-}
-
-.navTitle {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #4A90E2;
-  letter-spacing: 1px;
-}
-
-.navLinks {
-  display: flex;
-  flex-wrap: wrap;
   gap: 1rem;
-  justify-content: center;
 }
-
-/* Boutons de navigation et téléchargement */
 .navButton {
   background: #4A90E2;
-  color: #fff;
-  padding: 0.7rem 1.2rem;
-  border-radius: 4px;
-  font-weight: bold;
+  color: #555;
+  width: 180px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-  transition: transform 0.2s, background 0.2s;
-  min-width: 130px;
-  text-align: center;
   text-transform: uppercase;
+  font-weight: bold;
+  border: 1px solid #4A90E2;
+  transition: transform 0.3s, background 0.3s, box-shadow 0.3s;
 }
-
 .navButton:hover {
   background: #357ABD;
-  transform: translateY(-2px);
-}
-
-/* Bloc Téléchargement en bas */
-.downloadBlock {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 6px;
-  max-width: 600px;
-  width: 100%;
-  margin-top: 2rem;
-  border: 1px solid #4A90E2;
+  transform: scale(1.1) rotate(2deg);
+  box-shadow: 0 6px 12px rgba(53,122,189,0.3);
 }
 
 /* Zone du cube */
 .scene {
   width: 500px;
   height: 500px;
-  background: #e9e9e9;
-  margin-bottom: 2rem;
-  border-radius: 6px;
+  background: #eef7ff;
+  border-radius: 12px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1000px;
-  perspective-origin: center center;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  perspective: 1200px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  touch-action: none; /* Empêche la navigation tactile par défaut */
 }
-
-/* Le cube */
 .cube {
   width: 300px;
   height: 300px;
   transform-style: preserve-3d;
+  transition: box-shadow 0.3s;
 }
-
-/* 6 Faces du cube */
+.cube:hover {
+  box-shadow: 0 0 20px rgba(53,122,189,0.4);
+}
 .face {
   position: absolute;
   width: 300px;
@@ -117,8 +90,6 @@
   backface-visibility: hidden;
   border: 1px solid #ddd;
 }
-
-/* Les vidéos */
 .videoFace {
   width: 100%;
   height: 100%;
@@ -126,22 +97,50 @@
   cursor: pointer;
 }
 
-/* Positionnement en 3D (translateZ à 150px = 300/2) */
-.front {
-  transform: translateZ(150px);
+/* Positionnement 3D */
+.front { transform: translateZ(150px); }
+.back { transform: rotateY(180deg) translateZ(150px); }
+.right { transform: rotateY(90deg) translateZ(150px); }
+.left { transform: rotateY(-90deg) translateZ(150px); }
+.top { transform: rotateX(90deg) translateZ(150px); }
+.bottom { transform: rotateX(-90deg) translateZ(150px); }
+
+/* Footer de téléchargement */
+.downloadFooter {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
 }
-.back {
-  transform: rotateY(180deg) translateZ(150px);
+.downloadTitle {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: #4A90E2;
+  font-weight: bold;
 }
-.right {
-  transform: rotateY(90deg) translateZ(150px);
+.downloadLinks {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
-.left {
-  transform: rotateY(-90deg) translateZ(150px);
+.downloadBtn {
+  background: #fff;
+  color: #555;
+  width: 130px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: bold;
+  border: 1px solid #4A90E2;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
 }
-.top {
-  transform: rotateX(90deg) translateZ(150px);
-}
-.bottom {
-  transform: rotateX(-90deg) translateZ(150px);
+.downloadBtn:hover {
+  background: #f0f0f0;
+  transform: scale(1.1) rotate(-2deg);
+  box-shadow: 0 6px 12px rgba(100, 100, 100, 0.3);
 }
